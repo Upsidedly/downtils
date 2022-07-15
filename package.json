@@ -1,0 +1,23 @@
+{
+  "name": "downtils",
+  "version": "1.0.0",
+  "description": "Utilities for the downsided bot",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "node dist/index.js",
+    "watch": "tsc -w"
+  },
+  "keywords": [
+    "upsided"
+  ],
+  "author": "GPL-3.0-or-later",
+  "license": "ISC",
+  "dependencies": {
+    "@types/ms": "^0.7.31",
+    "@types/node": "^18.0.0",
+    "axios": "^0.27.2",
+    "discord.js": "^13.8.1",
+    "ms": "^2.1.3"
+  },
+  "type": "module"
+}
