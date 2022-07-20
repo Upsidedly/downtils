@@ -1,5 +1,19 @@
 import { readdir } from 'fs/promises'
 import axios from 'axios'
+import {
+    ButtonPagination,
+    RepliableInteraction,
+    ButtonPaginationData,
+    ButtonPaginationDataArray,
+    ButtonPaginationInteractionOptions,
+    ButtonPaginationMessageOptions,
+    ButtonPaginationMaxType,
+    ButtonPaginationIconType
+} from './commands/ButtonPagination.js'
+import {
+    handleErrors,
+    EventError
+} from './commands/handleErrors.js'
 
 /**
  * Similiar to fs/promises readdir, however supports extension filtering.
@@ -28,36 +42,6 @@ export async function dimport(path: string): Promise<any> {
     return file.default
 }
 
-export type EventError = 'unhandledRejection' | 'uncaughtException' | 'uncaughtExceptionMonitor' | 'multipleResolves'
-
-export function handleErrors(errors: EventError | EventError[], prefix: string): void {
-    const errs = Array.isArray(errors) ? errors : [errors]
-
-    for (const error of errs) {
-        if (error === 'multipleResolves') {
-            process.on(error, (type, prom, origin) => {
-                console.log(`${prefix}Multiple Resolves`);
-                console.log(type, prom, origin);
-            });
-        } else if (error === 'uncaughtException') {
-            process.on(error, (err, origin) => {
-                console.log(`${prefix}Uncaught Exception/Catch`);
-                console.log(err, origin);
-            });
-        } else if (error === 'uncaughtExceptionMonitor') {
-            process.on(error, (err, origin) => {
-                console.log(`${prefix}Uncaught Exception/Catch (MONITOR)`);
-                console.log(err, origin);
-            });
-        } else if (error === 'unhandledRejection') {
-            process.on(error, (reason, p) => {
-                console.log(`${prefix}Unhandled Rejection/Catch`);
-                console.log(reason, p);
-            });
-        }
-    }
-}
-
 /**
  * Module of fs-like functions
  */
@@ -81,4 +65,28 @@ export const utility = {
     handleErrors
 }
 
-export default { ...{...fs, ...request, ...utility} }
+export const discord = {
+    /**
+     * Makes a Button paginated message for embeds. Works with repliable interactions as well as messages.
+     * @param entity The interaction or message to reply to
+     * @param data The data to paginate
+     * @param options The pagination options
+     */
+    ButtonPagination,
+}
+
+export {
+    // Button Pagination
+    ButtonPaginationData,
+    ButtonPaginationDataArray,
+    ButtonPaginationInteractionOptions,
+    ButtonPaginationMessageOptions,
+    ButtonPaginationMaxType,
+    ButtonPaginationIconType,
+    RepliableInteraction,
+
+    // Handle Errors
+    EventError
+}
+
+export default { ...fs, ...request, ...utility, ...discord }
